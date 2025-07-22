@@ -317,7 +317,7 @@ HTML_content = """
                     <thead>
                         <tr>
                             <th>PFAS</th>
-                            <th>DETA Variant</th>
+                            <th>ADSORBER Variant</th>
                             <th>Binding Distance (nm)</th>
                             <th>Binding Free Energy (kJ/mol)</th>
                             <th>Dissociation Constant (M)</th>
@@ -539,7 +539,7 @@ HTML_content = """
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${row.PFAS}</td>
-                    <td>${row.DETA_variant}</td>
+                    <td>${row.ADSORBER_variant}</td>
                     <td>${row.Binding_distance_nm}</td>
                     <td>${row.Binding_free_energy_kJ_mol}</td>
                     <td>${row.Dissociation_constant_M}</td>
@@ -559,7 +559,7 @@ app.mount("/images", StaticFiles(directory="images"), name="images")
 @app.get("/")
 def get_pfas_match_root():
     """Base API for PFAS to Adsorber match"""
-    return {"PFAS": "DETA-adsorber"}
+    return {"PFAS": "ADSORBER-adsorber"}
 
 
 @app.get("/app", response_class=HTMLResponse)
@@ -606,6 +606,7 @@ async def get_images_from_text(request: Request):
     images_adsorbers = []
     mol2_files_adsorbers = []
     pfas_table_dict = {}
+    adsorber_name = ""
     for molecule_name in molecule_names:
         smiles = get_smiles(molecule_name)
         filename = get_filename(smiles) + ".jpg"
@@ -619,7 +620,7 @@ async def get_images_from_text(request: Request):
             # if the molecule is a PFAS
             # Fetch the binding table for the PFAS
             pfas_table_dict = get_best_adsorber_pfas_table(molecule_name)
-            adsorber_name = "DETA_" + pfas_table_dict[0].get("DETA_variant")
+            adsorber_name = "ADSORBER_" + pfas_table_dict[0].get("ADSORBER_variant")
             image_adsorber = adsorber_name + ".jpg"
             image_adsorber_path = Path("images") / image_adsorber
             images_adsorbers.append(

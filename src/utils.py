@@ -30,9 +30,16 @@ def get_smiles(molecule_name: str) -> str:
 
 
 def get_filename(smiles: str):
-    """Get the filename from a dictionary"""
+    """Get the filename from a given smiles representation"""
     for mol in MoleculeConstants:
         if mol.value.smiles == smiles:
+            return mol.value.image
+
+
+def get_filename_from_names(molecule_name: str):
+    """Get the filename from a given molecule name"""
+    for mol in MoleculeConstants:
+        if mol.value.name == molecule_name:
             return mol.value.image
 
 
@@ -46,7 +53,7 @@ def get_best_adsorber_for_pfas(pfas_name: str) -> str:
 
 def get_best_adsorber_pfas_table(pfas_name: str) -> dict:
     """Get the sorted table of best adsorbers for a given PFAS"""
-    data_file = Path("data/pfas_deta_binding.csv")
+    data_file = Path("data/pfas_adsorber_binding.csv")
     df = pd.read_csv(data_file)
     # Filter the DataFrame for the given PFAS name
     for mol in MoleculeConstants:
